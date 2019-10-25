@@ -2,26 +2,33 @@ import numpy as np
 
 
 def read_file(files):
-    texts = []
+    # texts is a dict of dicts, so that keys are languages, and values is a dict
+    # of unique n-consecutive strings in language and their number of repetitions
+    n = 3
+    texts = {}
     for i in files:
         f = open(i, "rt", encoding="utf8").read().\
             replace("\n", "").\
-            replace(" ", "").\
-            replace(".", "").\
-            replace(",", "").\
-            replace(";", "").\
+            replace(".", " ").\
+            replace(",", " ").\
+            replace(";", " ").\
+            replace("  ", " ").\
             upper()
-        texts.append(f)
+        unique = {}
+        # get all n-consecutive strings, and count the number of repetitions
+        # default n = 3
+        for j in range(n, len(f)):
+            n_consecutive = f[j-n:j]
+            # if n-consecutive exists, we increase their value
+            if n_consecutive in unique:
+                unique[n_consecutive] += 1
+            else:
+                # else we put new key in dict with value 1
+                unique.update({n_consecutive: 1})
+        # we put the count of unique n-consecutive strings in text dict
+        texts.update({i: unique})
 
-    n = 3
-
-    split_texts = []
-    # Split string in groups of n consecutive characters
-    for text in texts:
-        o = [(text[i:i + n]) for i in range(0, len(text), n)]
-        split_texts.append(o)
-
-    return split_texts
+    return texts
 
 
 class KMedoidsClustering:
@@ -79,8 +86,11 @@ if __name__ == "__main__":
     DATA_FILE1 = "src3.txt"
     DATA_FILE2 = "slv.txt"
     DATA_FILE3 = "slo.txt"
-    DATA_FILES = [DATA_FILE1, DATA_FILE2, DATA_FILE3]
+    TEST = "test.txt"
+    DATA_FILES = [DATA_FILE1, DATA_FILE2]
 
-    KMC = KMedoidsClustering(read_file(DATA_FILES))
-    KMC.run()
+    file = read_file(DATA_FILES)
+
+    # KMC = KMedoidsClustering(read_file(DATA_FILES))
+    # KMC.run()
 

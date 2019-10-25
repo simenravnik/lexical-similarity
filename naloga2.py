@@ -56,8 +56,7 @@ class KMedoidsClustering:
         cos = dot / (norm_vector1 * norm_vector2)
         return cos
 
-    def k_medoids(self, n=2):
-        # choose k random languages
+    def select_randomly(self, n=2):
         list_of_languages = list(self.data.keys())
         random_leaders = []
         while len(random_leaders) != n:
@@ -69,58 +68,68 @@ class KMedoidsClustering:
         groups = {}
         for leader in random_leaders:
             groups.update({leader: set()})
+        return groups
 
+    def reorganize_groups(self, groups):
+        # ----------- CREATING NEW GROUPS BECAUSE LEADERS MIGHT CHANGE ----------- #
+        # iterate over all languages and see which leader it belongs
+        for i in self.data:
+            v = self.data.get(i)  # values of current language
+            max_similarity = -1
+            # remove element from current group and put it next to the right leader
+            for leader in groups.keys():
+                if i in groups.get(leader):
+                    groups[leader].remove(i)
+            belong_to = "None"  # currently belong to nobody
+            # iterate over leaders and calculating cosine distance between current language and leader language
+            for leader in groups.keys():
+                values = self.data.get(leader)
+                similarity = self.cosine_similarity(values, v)  # cosine similarity
+                if max_similarity < similarity:
+                    max_similarity = similarity
+                    belong_to = leader
+            # update current language (i) to leader who is most similar (belong_to)
+            groups[belong_to].update([i])
+        return groups
+
+    def recalculate_leaders(self, groups):
+        # ----- RECALCULATING WHO ARE THE LEADERS BECAUSE GROUPS MIGHT HAVE CHANGED ----- #
+        new_groups = {}  # new dict because we cannot change one (groups) in loop
+        # iterate over all groups
+        for leader in groups.keys():
+            group = groups.get(leader)
+            dist = 0
+            min_dist = -1
+            new_leader = "None"
+            # iterate over all elements in group and calculating
+            # the distance from all elements to all other elements
+            for i in group:
+                values_i = self.data.get(i)
+                for j in group:
+                    if i != j:
+                        values_j = self.data.get(j)
+                        dist += (1 - self.cosine_similarity(values_i, values_j))  # cosine distance
+                # choosing min distance from element to all other elements as the new leader
+                if min_dist == -1 or dist < min_dist:
+                    min_dist = dist
+                    new_leader = i
+                dist = 0
+            # setting current group new leader
+            new_groups[new_leader] = group
+        return new_groups
+
+    def k_medoids(self):
+        # choose k random languages
+        groups = self.select_randomly()
         old_groups = {}  # for saving previous state of groups
-
         # while loop until the groups remain the same
         while groups.keys() != old_groups.keys():
             # save current groups to old_groups for comparison in while loop
             old_groups = groups
-
             # ----------- CREATING NEW GROUPS BECAUSE LEADERS MIGHT CHANGE ----------- #
-            # iterate over all languages and see which leader it belongs
-            for i in self.data:
-                v = self.data.get(i)    # values of current language
-                max_similarity = -1
-                # remove element from current group and put it next to the right leader
-                for leader in groups.keys():
-                    if i in groups.get(leader):
-                        groups[leader].remove(i)
-                belong_to = "None"  # currently belong to nobody
-                # iterate over leaders and calculating cosine distance between current language and leader language
-                for leader in groups.keys():
-                    values = self.data.get(leader)
-                    similarity = self.cosine_similarity(values, v)  # cosine similarity
-                    if max_similarity < similarity:
-                        max_similarity = similarity
-                        belong_to = leader
-                # update current language (i) to leader who is most similar (belong_to)
-                groups[belong_to].update([i])
-
+            groups = self.reorganize_groups(groups)
             # ----- RECALCULATING WHO ARE THE LEADERS BECAUSE GROUPS MIGHT HAVE CHANGED ----- #
-            new_groups = {}  # new dict because we cannot change one (groups) in loop
-            # iterate over all groups
-            for leader in groups.keys():
-                group = groups.get(leader)
-                dist = 0
-                min_dist = -1
-                new_leader = "None"
-                # iterate over all elements in group and calculating
-                # the distance from all elements to all other elements
-                for i in group:
-                    values_i = self.data.get(i)
-                    for j in group:
-                        if i != j:
-                            values_j = self.data.get(j)
-                            dist += (1 - self.cosine_similarity(values_i, values_j))    # cosine distance
-                    # choosing min distance from element to all other elements as the new leader
-                    if min_dist == -1 or dist < min_dist:
-                        min_dist = dist
-                        new_leader = i
-                    dist = 0
-                # setting current group new leader
-                new_groups[new_leader] = group
-            groups = new_groups
+            groups = self.recalculate_leaders(groups)
         print(groups)
 
     def run(self):

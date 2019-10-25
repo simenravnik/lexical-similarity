@@ -1,4 +1,5 @@
 
+import random
 import numpy as np
 
 
@@ -55,16 +56,22 @@ class KMedoidsClustering:
         cos = dot / (norm_vector1 * norm_vector2)
         return cos
 
-    def k_medoids(self):
+    def k_medoids(self, n=2):
         # choose k random languages
-        # sort of: language1, values1 = random.choice(list(self.data.keys()))
-        # for now, lets choose manually
+        list_of_languages = list(self.data.keys())
+        random_leaders = []
+        while len(random_leaders) != n:
+            leader = random.choice(list_of_languages)
+            if leader not in random_leaders:
+                random_leaders.append(leader)
 
-        leader1 = "test/slo.txt"
-        leader2 = "test/ang.txt"
+        print(random_leaders)
+        groups = {}
+        for leader in random_leaders:
+            groups.update({leader: set()})
 
-        groups = {leader1: set(), leader2: set()}
-        old_groups = {}
+        old_groups = {}  # for saving previous state of groups
+
         # while loop until the groups remain the same
         while groups.keys() != old_groups.keys():
             # save current groups to old_groups for comparison in while loop
@@ -75,7 +82,11 @@ class KMedoidsClustering:
             for i in self.data:
                 v = self.data.get(i)    # values of current language
                 max_similarity = -1
-                belong_to = "none"  # currently belong to nobody
+                # remove element from current group and put it next to the right leader
+                for leader in groups.keys():
+                    if i in groups.get(leader):
+                        groups[leader].remove(i)
+                belong_to = "None"  # currently belong to nobody
                 # iterate over leaders and calculating cosine distance between current language and leader language
                 for leader in groups.keys():
                     values = self.data.get(leader)

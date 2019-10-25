@@ -34,6 +34,36 @@ def read_file(files, n=3):
 class KMedoidsClustering:
     def __init__(self, data):
         self.data = data
+        # memoization dictionary
+        self.distances = {}
+
+    def get_distance(self, language1, language2):
+        # val1 and val2 are dictionaries of values n-consecutive strings and key that are "country" names
+        if language1 in self.distances:
+            distance_to = self.distances.get(language1)
+            if language2 in distance_to:
+                dist = distance_to.get(language2)
+                return dist
+
+        # n-consecutive strings of both languages
+        val_language1 = self.data.get(language1)
+        val_language2 = self.data.get(language2)
+
+        # calculating cosine similarity
+        similarity = self.cosine_similarity(val_language1, val_language2)
+        distance = 1 - similarity
+
+        # adding language to dict if not present
+        if language1 not in self.distances:
+            self.distances[language1] = {}
+        if language2 not in self.distances:
+            self.distances[language2] = {}
+
+        # evaluating distance between languages
+        self.distances[language1][language2] = distance
+        self.distances[language2][language1] = distance
+
+        return distance
 
     @staticmethod
     def cosine_similarity(language1, language2):
@@ -74,7 +104,6 @@ class KMedoidsClustering:
         # ----------- CREATING NEW GROUPS BECAUSE LEADERS MIGHT CHANGE ----------- #
         # iterate over all languages and see which leader it belongs
         for i in self.data:
-            v = self.data.get(i)  # values of current language
             max_similarity = -1
             # remove element from current group and put it next to the right leader
             for leader in groups.keys():
@@ -83,8 +112,8 @@ class KMedoidsClustering:
             belong_to = "None"  # currently belong to nobody
             # iterate over leaders and calculating cosine distance between current language and leader language
             for leader in groups.keys():
-                values = self.data.get(leader)
-                similarity = self.cosine_similarity(values, v)  # cosine similarity
+                distance = self.get_distance(i, leader)     # cosine distance
+                similarity = 1 - distance   # cosine similarity
                 if max_similarity < similarity:
                     max_similarity = similarity
                     belong_to = leader
@@ -104,11 +133,9 @@ class KMedoidsClustering:
             # iterate over all elements in group and calculating
             # the distance from all elements to all other elements
             for i in group:
-                values_i = self.data.get(i)
                 for j in group:
                     if i != j:
-                        values_j = self.data.get(j)
-                        dist += (1 - self.cosine_similarity(values_i, values_j))  # cosine distance
+                        dist += self.get_distance(i, j)     # cosine distance
                 # choosing min distance from element to all other elements as the new leader
                 if min_dist == -1 or dist < min_dist:
                     min_dist = dist
@@ -133,7 +160,8 @@ class KMedoidsClustering:
         print(groups)
 
     def run(self):
-        self.k_medoids()
+        for i in range(0, 10):
+            self.k_medoids()
 
 
 if __name__ == "__main__":

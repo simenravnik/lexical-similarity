@@ -4,6 +4,7 @@ import numpy as np
 import os
 
 from unidecode import unidecode
+import matplotlib.pyplot as plt
 
 
 def read_file(files, n=3):
@@ -101,8 +102,6 @@ class KMedoidsClustering:
             leader = random.choice(list_of_languages)
             if leader not in random_leaders:
                 random_leaders.append(leader)
-
-        print(random_leaders)
         groups = {}
         for leader in random_leaders:
             groups.update({leader: set()})
@@ -215,11 +214,15 @@ class KMedoidsClustering:
 
     def run(self):
         k = 5
-        for i in range(0, 1):
+        all_silhouette_scores = []
+        for i in range(0, 1000):
             clusters = self.k_medoids(k)
-            print(clusters)
             silhouette_score = self.silhouette(clusters)
-            print(silhouette_score)
+            all_silhouette_scores.append(silhouette_score)
+
+        # plotting the points
+        plt.hist(all_silhouette_scores, bins=50, range=(0, 1), edgecolor='black')
+        plt.show()
 
 
 if __name__ == "__main__":

@@ -94,10 +94,10 @@ class KMedoidsClustering:
         cos = dot / (norm_vector1 * norm_vector2)
         return cos
 
-    def select_randomly(self, n=2):
+    def select_randomly(self, k=2):
         list_of_languages = list(self.data.keys())
         random_leaders = []
-        while len(random_leaders) != n:
+        while len(random_leaders) != k:
             leader = random.choice(list_of_languages)
             if leader not in random_leaders:
                 random_leaders.append(leader)
@@ -153,9 +153,9 @@ class KMedoidsClustering:
             new_groups[new_leader] = group
         return new_groups
 
-    def k_medoids(self):
+    def k_medoids(self, k=2):
         # choose k random languages
-        groups = self.select_randomly()
+        groups = self.select_randomly(k)
         old_groups = {}  # for saving previous state of groups
         # while loop until the groups remain the same
         while groups.keys() != old_groups.keys():
@@ -168,9 +168,16 @@ class KMedoidsClustering:
         return groups
 
     def silhouette(self, groups):
+        all_silhouettes = []  # storing silhouettes from each data point
         for leader in groups.keys():
             cluster = groups.get(leader)
-            all_silhouettes = []    # storing silhouettes from each data point
+
+            # ---- if only one element in cluster silhouette score is zero ---- #
+            if len(cluster) < 2:
+                s = 0
+                all_silhouettes.append(s)
+                continue
+
             # calculating silhouette score for each data point
             for i in cluster:
                 # ---- initialization of a(i) and b(i) ----- #
@@ -202,13 +209,14 @@ class KMedoidsClustering:
                 # ----- SILHOUETTE ----- #
                 s = (b - a) / max(a, b)     # silhouette score of one data point
                 all_silhouettes.append(s)
-            # calculating the average silhouette score
-            silhouette_score = sum(all_silhouettes) / len(all_silhouettes)
-            return silhouette_score
+        # calculating the average silhouette score
+        silhouette_score = sum(all_silhouettes) / len(all_silhouettes)
+        return silhouette_score
 
     def run(self):
-        for i in range(0, 10):
-            clusters = self.k_medoids()
+        k = 5
+        for i in range(0, 1):
+            clusters = self.k_medoids(k)
             print(clusters)
             silhouette_score = self.silhouette(clusters)
             print(silhouette_score)
@@ -234,6 +242,6 @@ if __name__ == "__main__":
             DATA_FILES.append(path)
     read_file(DATA_FILES)
 
-    # KMC = KMedoidsClustering(read_file(DATA_FILES))
-    # KMC.run()
+    KMC = KMedoidsClustering(read_file(DATA_FILES))
+    KMC.run()
 

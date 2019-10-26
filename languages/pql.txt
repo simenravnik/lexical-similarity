@@ -1,3 +1,5 @@
+Polish
+
 POWSZECHNA DEKLARACJA PRAW CZŁOWIEKA
 
 [Preamble]
@@ -46,7 +48,7 @@ Każdy człowiek ma na warunkach całkowitej równości prawo, aby przy rozstrzy
 
 Artykuł 11
 
-1. Każdy człowiek oskarżony o popełnienie przestjpstwa ma prawo, aby uznawano go za niewinnego dopóty, dopóki nie udowodni mu się winy zgodnie z prawem podczas publicznego procesu, w którym zapewniono mu wszystkie konieczne środki obrony. 
+1. Każdy człowiek oskarżony o popełnienie przestjpstwa ma prawo, aby uznawano go za niewinnego dopóty, dopóki nie udowodni mu się winy zgodnie z prawem podczas publicznego procesu, w którym zapewniono mu wszystkie konieczne środki obrony.
 
 2. Nikt nie może być skazany za przestępstwo z powodu działania lub zaniechania nie stanowiącego w chwili jego dokonania przestępstwa według prawa krajowego lub międzynarodowego. Nie wolno także wymierzać kary wyższej niż ta, która była przewidziana w chwili popełnienia przestępstwa.
 
@@ -102,9 +104,9 @@ Artykuł 20
 
 Artykuł 21
 
-1. Każdy człowiek ma prawo do uczestniczenia w rządzeniu swym krajem bezpośrednio lub poprzez swobodnie wybranych przedstawicieli. 
+1. Każdy człowiek ma prawo do uczestniczenia w rządzeniu swym krajem bezpośrednio lub poprzez swobodnie wybranych przedstawicieli.
 
-2. Każdy człowiek ma prawo równego dostępu do służby publicznej w swym kraju. 
+2. Każdy człowiek ma prawo równego dostępu do służby publicznej w swym kraju.
 
 3. Wola ludu jest podstawą władzy rządu; wola ta wyraża się w przeprowadzanych okresowo rzetelnych wyborach, opartych na zasadzie powszechności, równości i tajności, lub na innej równorzędnej procedurze, zapewniającej wolność wyborów.
 
@@ -116,7 +118,7 @@ Artykuł 23
 
 1. Każdy człowiek ma prawo do pracy, do swobodnego wyboru pracy, do odpowiednich i zadowalających warunków pracy oraz do ochrony przed bezrobociem.
 
-2. Każdy człowiek, bez względu na jakiekolwiek różnice, ma prawo do równej płacy za równą pracj. 
+2. Każdy człowiek, bez względu na jakiekolwiek różnice, ma prawo do równej płacy za równą pracj.
 
 3. Każdy pracujący ma prawo do odpowiedniego i zadowalającego wynagrodzenia, zapewniającego jemu i jego rodzinie egzystencję odpowiadającą godności ludzkiej i uzupełnianego w razie potrzeby innymi środkami pomocy społecznej.
 

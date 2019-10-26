@@ -1,3 +1,5 @@
+Romanian
+
 DECLARAŢIA UNIVERSALĂ A DREPTURILOR OMULUI
 
 Preambul
@@ -46,7 +48,7 @@ Orice persoană are dreptul în deplină egalitate de a fi audiată în mod echi
 
 Articolul 11
 
-1. Orice persoană acuzată de comiterea unui act cu caracter penal are dreptul să fie presupusă nevinovată pînă cînd vinovăţia sa va fi stabilită în mod legal în cursul unui proces public in care i-au fost asigurate toate garanţiile necesare apărării sale. 
+1. Orice persoană acuzată de comiterea unui act cu caracter penal are dreptul să fie presupusă nevinovată pînă cînd vinovăţia sa va fi stabilită în mod legal în cursul unui proces public in care i-au fost asigurate toate garanţiile necesare apărării sale.
 
 2. Nimeni nu va fi condamnat pentru acţiuni sau omisiuni care nui constituiau, în momentul cînd au fost comise, un act cu caracter penal conform dreptului internaţional sau naţional. De asemenea, nu se va aplica nici o pedeapsă mai grea decît aceea care era aplicabilă în momentul cînd a fost săvîrşit actul cu caracter penal.
 
@@ -106,7 +108,7 @@ Articolul 21
 
 2. Orice persoană are dreptul de acces egal la funcţiile publice din ţăra sa.
 
-3. Voinţa poporului trebuie să constituie baza puterii de stat; această voinţă trebuie să fie exprimată prin alegeri nefalsificate, care să aibă loc în mod periodic prin sufragiu universal, egal şi exprimat prin vot secret sau urmînd o procedură echivalentă care să asigure libertatea votului. 
+3. Voinţa poporului trebuie să constituie baza puterii de stat; această voinţă trebuie să fie exprimată prin alegeri nefalsificate, care să aibă loc în mod periodic prin sufragiu universal, egal şi exprimat prin vot secret sau urmînd o procedură echivalentă care să asigure libertatea votului.
 
 Articolul 22
 

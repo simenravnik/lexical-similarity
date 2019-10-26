@@ -153,15 +153,57 @@ class KMedoidsClustering:
         while groups.keys() != old_groups.keys():
             # save current groups to old_groups for comparison in while loop
             old_groups = groups
-            # ----------- CREATING NEW GROUPS BECAUSE LEADERS MIGHT CHANGE ----------- #
+            # ----------- CREATING NEW GROUPS BECAUSE LEADERS MIGHT HAVE CHANGED ------------ #
             groups = self.reorganize_groups(groups)
             # ----- RECALCULATING WHO ARE THE LEADERS BECAUSE GROUPS MIGHT HAVE CHANGED ----- #
             groups = self.recalculate_leaders(groups)
-        print(groups)
+        return groups
+
+    def silhouette(self, groups):
+        for leader in groups.keys():
+            cluster = groups.get(leader)
+            all_silhouettes = []    # storing silhouettes from each data point
+            # calculating silhouette score for each data point
+            for i in cluster:
+                # ---- initialization of a(i) and b(i) ----- #
+                a = 0   # a(i)
+                b = 0   # b(i)
+
+                # ---------- CALCULATING a(i) ---------- #
+                # calculating distance from data point i to all others points in group
+                for j in cluster:
+                    if i != j:
+                        a += self.get_distance(i, j)    # cosine distance
+                # normalization of a(i)
+                a /= (len(cluster) - 1)
+
+                # ---------- CALCULATING b(i) ---------- #
+                # calculating to other clusters
+                all_b = []  # for saving all b(i) to other clusters and than choosing the min
+                for other_clusters_leader in groups.keys():
+                    tmp_b = 0
+                    if other_clusters_leader != leader:
+                        other_cluster = groups.get(other_clusters_leader)
+                        for j in other_cluster:
+                            tmp_b += self.get_distance(i, j)    # cosine distance
+                        # normalization of tmp_b
+                        tmp_b /= len(other_cluster)
+                        all_b.append(tmp_b)
+                b = min(all_b)
+
+                # ----- SILHOUETTE ----- #
+                s = (b - a) / max(a, b)     # silhouette score of one data point
+                all_silhouettes.append(s)
+            # calculating the average silhouette score
+            silhouette_score = sum(all_silhouettes) / len(all_silhouettes)
+            return silhouette_score
 
     def run(self):
         for i in range(0, 10):
-            self.k_medoids()
+            clusters = self.k_medoids()
+            print(clusters)
+            silhouette_score = self.silhouette(clusters)
+            print(silhouette_score)
 
 
 if __name__ == "__main__":

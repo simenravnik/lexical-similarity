@@ -3,6 +3,8 @@ import random
 import numpy as np
 import os
 
+from unidecode import unidecode
+
 
 def read_file(files, n=3):
     # texts is a dict of dicts, so that keys are languages, and values is a dict
@@ -13,11 +15,14 @@ def read_file(files, n=3):
             replace("\n", " ").\
             replace(".", " ").\
             replace(",", " ").\
-            replace(";", " "). \
-            replace("    ", " "). \
-            replace("   ", " "). \
-            replace("  ", " ").\
-            upper()
+            replace(";", " ").\
+            replace("(", " ").\
+            replace(")", " ").\
+            replace("    ", " ").\
+            replace("   ", " ").\
+            replace("  ", " ")
+        f = unidecode(f)    # unidecode for normalizing letters
+        f = f.upper()   # to upper letters
         unique = {}
         # get all n-consecutive strings, and count the number of repetitions
         # default n = 3
@@ -221,7 +226,12 @@ if __name__ == "__main__":
     TEST8 = "test/prt.txt"
     TEST9 = "test/itl.txt"
 
-    DATA_FILES = os.listdir('20/')
+    entries = os.listdir('20/')
+    DATA_FILES = []
+    for entry in entries:
+        if entry[0] != '.':
+            path = "20/" + entry
+            DATA_FILES.append(path)
     read_file(DATA_FILES)
 
     # KMC = KMedoidsClustering(read_file(DATA_FILES))

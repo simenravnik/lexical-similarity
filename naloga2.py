@@ -1,6 +1,7 @@
 
 import random
 import numpy as np
+import os
 
 
 def read_file(files, n=3):
@@ -9,10 +10,12 @@ def read_file(files, n=3):
     texts = {}
     for i in files:
         f = open(i, "rt", encoding="utf8").read().\
-            replace("\n", "").\
+            replace("\n", " ").\
             replace(".", " ").\
             replace(",", " ").\
-            replace(";", " ").\
+            replace(";", " "). \
+            replace("    ", " "). \
+            replace("   ", " "). \
             replace("  ", " ").\
             upper()
         unique = {}
@@ -207,10 +210,6 @@ class KMedoidsClustering:
 
 
 if __name__ == "__main__":
-    DATA_FILE1 = "src3.txt"
-    DATA_FILE2 = "slv.txt"
-    DATA_FILE3 = "slo.txt"
-
     # test files
     TEST1 = "test/slo.txt"
     TEST2 = "test/svk.txt"
@@ -221,8 +220,10 @@ if __name__ == "__main__":
     TEST7 = "test/spn.txt"
     TEST8 = "test/prt.txt"
     TEST9 = "test/itl.txt"
-    DATA_FILES = [TEST1, TEST2, TEST3, TEST4, TEST5, TEST6, TEST7, TEST8, TEST9]
 
-    KMC = KMedoidsClustering(read_file(DATA_FILES))
-    KMC.run()
+    DATA_FILES = os.listdir('20/')
+    read_file(DATA_FILES)
+
+    # KMC = KMedoidsClustering(read_file(DATA_FILES))
+    # KMC.run()
 

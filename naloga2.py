@@ -24,6 +24,9 @@ def read_file(files, n=3):
             replace("  ", " ")
         f = unidecode(f)    # unidecode for normalizing letters
         f = f.upper()   # to upper letters
+        f = f.split(' ', 1)
+        country_name = f[0]  # country name
+        f = f[1]    # everything else is language
         unique = {}
         # get all n-consecutive strings, and count the number of repetitions
         # default n = 3
@@ -36,7 +39,7 @@ def read_file(files, n=3):
                 # else we put new key in dict with value 1
                 unique.update({n_consecutive: 1})
         # we put the count of unique n-consecutive strings in text dict
-        texts.update({i: unique})
+        texts.update({country_name: unique})
     return texts
 
 
@@ -215,36 +218,57 @@ class KMedoidsClustering:
     def run(self):
         k = 5
         all_silhouette_scores = []
-        for i in range(0, 1000):
+        # storing the best and worst clusters and their silhouettes
+        worst_silhouette_score = 1
+        worst_clusters = {}
+        best_silhouette_score = 0
+        best_clusters = {}
+        for i in range(0, 100):
             clusters = self.k_medoids(k)
             silhouette_score = self.silhouette(clusters)
             all_silhouette_scores.append(silhouette_score)
 
-        # plotting the points
-        plt.hist(all_silhouette_scores, bins=50, range=(0, 1), edgecolor='black')
+            if silhouette_score < worst_silhouette_score:
+                worst_silhouette_score = silhouette_score
+                worst_clusters = clusters
+            if silhouette_score > best_silhouette_score:
+                best_silhouette_score = silhouette_score
+                best_clusters = clusters
+
+        # printing best and worst clusters
+        print("--------------- BEST CLUSTERS ---------------")
+        self.print_clusters(best_clusters, best_silhouette_score, "best")
+        print("--------------- WORST CLUSTERS ---------------")
+        self.print_clusters(worst_clusters, worst_silhouette_score, "worst")
+        # --------- HISTOGRAM ---------
+        self.plot_hist(all_silhouette_scores)
+
+    @staticmethod
+    def plot_hist(all_silhouette_scores):
+        # plotting
+        plt.hist(all_silhouette_scores, bins=50, range=(-0.2, 1), edgecolor='black')
+        plt.title("Histogram pogostosti vrednosti silhuet pri k=5")
+        plt.ylabel("Št. pojavitev")
+        plt.xlabel("Vrednost silhuete")
         plt.show()
+
+    @staticmethod
+    def print_clusters(clusters, silhouette_score, name):
+        for leader in clusters.keys():
+            group = clusters.get(leader)
+            print(group)
+            print()
+        print("Silhouette score for " + name + " clusters: ", silhouette_score)
+        print()
 
 
 if __name__ == "__main__":
-    # test files
-    TEST1 = "test/slo.txt"
-    TEST2 = "test/svk.txt"
-    TEST3 = "test/hrv.txt"
-    TEST4 = "test/ang.txt"
-    TEST5 = "test/nem.txt"
-    TEST6 = "test/pol.txt"
-    TEST7 = "test/spn.txt"
-    TEST8 = "test/prt.txt"
-    TEST9 = "test/itl.txt"
-
-    entries = os.listdir('20/')
+    entries = os.listdir('languages/')
     DATA_FILES = []
     for entry in entries:
         if entry[0] != '.':
-            path = "20/" + entry
+            path = "languages/" + entry
             DATA_FILES.append(path)
-    read_file(DATA_FILES)
-
     KMC = KMedoidsClustering(read_file(DATA_FILES))
     KMC.run()
 

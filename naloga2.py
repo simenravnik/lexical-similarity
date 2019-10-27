@@ -243,6 +243,9 @@ class KMedoidsClustering:
         # --------- HISTOGRAM ---------
         self.plot_hist(all_silhouette_scores)
 
+        print("--------------- LANGUAGE PREDICTION ---------------")
+        self.find_language(best_clusters, "OSONCJE")
+
     @staticmethod
     def plot_hist(all_silhouette_scores):
         # plotting
@@ -261,6 +264,27 @@ class KMedoidsClustering:
         print("Silhouette score for " + name + " clusters: ", silhouette_score)
         print()
 
+    def find_language(self, clusters, name):
+        similarities = []   # for storing the similarity values
+        languages = []  # for storing which language
+        # calculating similarities
+        for leader in clusters.keys():
+            group = clusters.get(leader)
+            if name in group:
+                for i in group:
+                    if i != name:
+                        similarity = 1 - self.get_distance(name, i)
+                        similarities.append(similarity)
+                        languages.append(i)
+        # preparing for printing out the top 3 probabilities
+        zipped = zip(languages, similarities)
+        sorted_probabilities = sorted(zipped, key=lambda t: t[1])
+        if len(sorted_probabilities) > 2:
+            sorted_probabilities = sorted_probabilities[-3:]
+            sorted_probabilities.reverse()
+        for language, probability in sorted_probabilities:
+            print(name, " is ", language, " language with probability: ", round(probability*100, 2))
+
 
 if __name__ == "__main__":
     entries = os.listdir('languages/')
@@ -269,6 +293,7 @@ if __name__ == "__main__":
         if entry[0] != '.':
             path = "languages/" + entry
             DATA_FILES.append(path)
+    DATA_FILES.append("osoncje.txt")
     KMC = KMedoidsClustering(read_file(DATA_FILES))
     KMC.run()
 

@@ -52,7 +52,7 @@ Silhouette score for worst clusters: 0.02353354501771205
 
 To determine the likelihood of a given text in a particular language or language. In determining which language the text is written in, I implemented the following method. First, I ran the program, with the text already included, and selected the result with the best silhouette value. So I got optimally formed groups. I then searched for which group the text was located in and calculated a cosine similarity (1 - cosine distance) to all the languages in the group. In this way, I obtained the probabilities of how similar the text is to each language.
 
-For the text I chose a Slovenian paragraph from Wikipedia that talks about the origin and development of the solar system (link: [Nastanek in razvoj Osoncja](https://sl.wikipedia.org/wiki/Oson\%C4\%8Dje\%23Nastanek_in_razvoj}{Nastanek in Razvoj Osončja)). I got the following results:
+For the text I chose a Slovenian paragraph from Wikipedia that talks about the origin and development of the solar system ([Nastanek in razvoj Osoncja](https://github.com/simenravnik/lexical-similarity/blob/master/osoncje.txt)). I got the following results:
 
 ```bash
 ------------------- LANGUAGE PREDICTION ------------------- 

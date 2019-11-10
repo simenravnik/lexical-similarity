@@ -223,7 +223,7 @@ class KMedoidsClustering:
         worst_clusters = {}
         best_silhouette_score = 0
         best_clusters = {}
-        for i in range(0, 100):
+        for i in range(0, 1000):
             clusters = self.k_medoids(k)
             silhouette_score = self.silhouette(clusters)
             all_silhouette_scores.append(silhouette_score)
@@ -249,10 +249,10 @@ class KMedoidsClustering:
     @staticmethod
     def plot_hist(all_silhouette_scores):
         # plotting
-        plt.hist(all_silhouette_scores, bins=50, range=(-0.2, 1), edgecolor='black')
-        plt.title("Histogram pogostosti vrednosti silhuet pri k=5")
-        plt.ylabel("Št. pojavitev")
-        plt.xlabel("Vrednost silhuete")
+        plt.hist(all_silhouette_scores, bins=50, range=(0, 1), edgecolor='black')
+        plt.title("A histogram of the frequency of silhouette values at k = 5")
+        plt.ylabel("Frequency")
+        plt.xlabel("Silhouette score")
         plt.show()
 
     @staticmethod

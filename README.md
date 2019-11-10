@@ -12,7 +12,7 @@ The aim of was to develop an algorithm that, based on the analysis of similarity
 
 I ran the developed k-medoids clustering algorithm with 100 randomly selected initializations of random 5 medoids. After completing the algorithm, I calculated on a case-by-case basis how well the languages were grouped using the silhouette method. I saved the silhouette values and then plotted a histogram showing how often a given silhouette value appears.
 
-![Silhouette score histogram](https://raw.githubusercontent.com/simenravnik/lexical-similarity/master/hist-eng.png?token=AIYHDHFJYAYX6ZV326XIYAS5ZAXWY "Silhouette score histogram")
+![Silhouette score histogram](https://github.com/simenravnik/lexical-similarity/blob/master/hist-eng.png "Silhouette score histogram")
 
 When grouping, we want the elements in the group to be a little distance from each other, and to have as much distance as possible from other groups. Because we have chosen random languages for the initial leaders, it happens that groups are not formulated correctly, respectively. non-optimal groups are obtained whose elements have a relatively large distance between them and are located close to other groups. Therefore, we calculate the values of the silhouette, which tells us how well the individual groups are defined.
 
